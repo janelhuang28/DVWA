@@ -50,6 +50,10 @@ Within a browser:
  ![image](https://user-images.githubusercontent.com/39514108/145777913-2cd3c865-e74f-48b0-b08b-a675e03b0231.png)
  From this, we can see the CSRF token is used from the previous session. Hence, we can take the last request and paste that as the CSRF token in our browser. After using the username: admin and password: password, the login is done:
  ![image](https://user-images.githubusercontent.com/39514108/145778633-52922bd6-f8ee-4e7b-bdaa-041da66ab331.png)
+ 
+ ### Brute force Remarks
+ 
+ To make the page secure, enforce password policies and maximum attempts on the password. Extra security features such as enabling 2MFA is also recommended.
 
 
 
