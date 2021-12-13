@@ -34,5 +34,24 @@ Within a browser:
  ![image](https://user-images.githubusercontent.com/39514108/145332493-f3066fb7-64ea-4b59-ad9b-6517067aab38.png)
 4. Within the payloads tab, insert the wordlist for the username in Payload set 1, and the wordlist for the password in Payload set 2. After starting the attack, the following is observed. Note that the lenght difference indicates that it was a successful attack. 
  ![image](https://user-images.githubusercontent.com/39514108/145332329-9ce1c01a-833d-426a-a5bb-de345bc01050.png)
+ 
+ ### High
+ 
+ The CSRF token is required to login. Hence, setting the user_token field found after inspecting the page, to be recursive grep where the token is constantly changed helps to brute force the search. The offset is taken from the point at which the user_token field is indicated (If the DOC is not found, resend a new request to the intruder).
+![image](https://user-images.githubusercontent.com/39514108/145777006-d7a501ad-be0b-4df7-9f77-3e8a53da1151.png)
+ 1. Set the attack type to be pitchfork (sets the payloads in order) and the password and user_token to be custom variables.
+ 2. Load the list.
+ 3. Set the grep match to be incorrect ![image](https://user-images.githubusercontent.com/39514108/145777551-b2c72985-24a0-4551-ab1c-ed8f75e88067.png)
+ 4. Set the redirections to be always. ![image](https://user-images.githubusercontent.com/39514108/145777626-39f44f9c-23b5-43de-98a1-1fac22bff62c.png)
+ 5. Set the second payload (user_token) to eb recursive grep to allow the user_token to be trialed.
+ 6. Set the resource pool to have 1 concurrent thread
+ 
+ After running the attack, the username and password with the CSRF token is found. 
+ ![image](https://user-images.githubusercontent.com/39514108/145777913-2cd3c865-e74f-48b0-b08b-a675e03b0231.png)
+ From this, we can see the CSRF token is used from the previous session. Hence, we can take the last request and paste that as the CSRF token in our browser. After using the username: admin and password: password, the login is done:
+ ![image](https://user-images.githubusercontent.com/39514108/145778633-52922bd6-f8ee-4e7b-bdaa-041da66ab331.png)
+
+
+
 
  
