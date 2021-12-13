@@ -6,7 +6,7 @@ To setup DVWA, follow the following website:
 https://nooblinux.com/how-to-install-dvwa/
 
 ## Brute Force Password
-### Easy
+### Low and Medium
 To run a brute force search on DVWA, burp suite is used. Burp suite is used to intercept the requests that are sent to the DVWA website. 
 To setup:
 1. Go to Proxy -> Options - Note the IP address and Port
