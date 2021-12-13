@@ -17,7 +17,7 @@ Within a browser:
 2. Set allow intercept in about:config for network.proxy to be true.
 
 
-(Option 1) Run Hydra (a brute force tool):
+#### (Option 1) Run Hydra (a brute force tool):
 1. Run the following command: hydra <DVWA Ip address> -l admin -P /usr/share/set/src/fasttrack/wordlist.txt http-get-form "/dvwa/vulnerabilities/brute/:username=^USER^&password=^PASS^&Login=Login:Username and/or password incorrect.:H=Cookie: security=Low; PHPSESSIONID=eogppved743ckngeo0so6tnp87"
  Command Detaials:
  * -l - Username
@@ -26,7 +26,8 @@ Within a browser:
  * username=^USER^&password=^PASS^ - Places for the custom username and password
  * :F= - Faliure Message
  * :H= - Cookie information
-(Option 2) Run BurpSuite
+
+ #### (Option 2) Run BurpSuite:
  1. After incepting the traffic, right click on the captured data and send to intruder
  2. In the intruder tab, under positions, change the attack type to ```Cluster bomb```
  3. Click the ![image](https://user-images.githubusercontent.com/39514108/145332448-36683182-a233-4ef9-8259-817eccc8e886.png) sign. Then ![image](https://user-images.githubusercontent.com/39514108/145332475-ff1a7c9a-006d-42e6-b12e-3fc8fff25015.png) for the username and password fields like below:
