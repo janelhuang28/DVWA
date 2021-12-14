@@ -5,7 +5,7 @@ This project tests on the DVWA website
 To setup DVWA, follow the following website:
 https://nooblinux.com/how-to-install-dvwa/
 
-## Brute Force Password
+## 1. Brute Force Password
 ### Low and Medium
 To run a brute force search on DVWA, burp suite is used. Burp suite is used to intercept the requests that are sent to the DVWA website. 
 To setup:
@@ -55,7 +55,26 @@ Within a browser:
  
  To make the page secure, enforce password policies and maximum attempts on the password. Extra security features such as enabling 2MFA is also recommended.
 
+## 2. Command Injection
+### Low
+ In the command injection page, where the source code is shown below, the developer did not sanitise the input. 
+![image](https://user-images.githubusercontent.com/39514108/145917705-140a128a-10da-4c18-b483-dfd2a56a1376.png)
+This means that strings can be taken as a command. This means that we can execute extra commands with the use of ```;```. For example after executing: ```;cat /etc/passwd``` which gets the password file, the passwords are found:
+ ![image](https://user-images.githubusercontent.com/39514108/145918303-eac42787-9451-416f-a1e4-4b8a1764a576.png)
+Note that the use of ```;``` means that the command will execute regardless of whether the command before it was successful.
+ 
+ ### Medium
+ Upon viewing the source code as shown below, the && and ; characters are replaced. We can counteract this by using & which also executes the command.
+ ![image](https://user-images.githubusercontent.com/39514108/145918619-c2c76272-1d9b-4ea0-b17a-f807c9734a4e.png). For example, after executing: ```8.8.8.8&cat /etc/passwd``` the password file is also displayed. Note that:
+ * & - asynchronous 
+ * | - takes the ouput from the first command to the second command
+ * || - executed after the first command if it doesn't have a exit status of 0
+ * && - executed after the first command if it does have a exit status of 0
 
-
-
+### High
+ Again when viewing the source code as shown below, all strings that matched are replaced. 
+ ![image](https://user-images.githubusercontent.com/39514108/145919178-edd5a0df-67fc-4640-89c2-695f7be2979e.png)
+This means that the command of ```|| ``` can still be used. This is because the array will match on the first occurance, hence, the first ```|``` will still remain. Furthermore, since the array matches on ```| ``` (with a space at the end), a single pipe will still work. The following commands can be used to exploit the vulnerability:
+ * |cat /etc/passwd
+ * || cat /etc/passwd
  
