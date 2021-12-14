@@ -78,3 +78,8 @@ This means that the command of ```|| ``` can still be used. This is because the 
  * |cat /etc/passwd
  * || cat /etc/passwd
  
+ ### Remarks
+ To fix the code:
+ 1. Validate user input - by checking whether they have entered a valid IP address (whether the input is a number and in the specified format.)
+ 2. Escape shell arguemtns - by calling the escapeshellarg() function
+ 3. Treat all user input as strings 
