@@ -83,3 +83,40 @@ This means that the command of ```|| ``` can still be used. This is because the 
  1. Validate user input - by checking whether they have entered a valid IP address (whether the input is a number and in the specified format.)
  2. Escape shell arguemtns - by calling the escapeshellarg() function
  3. Treat all user input as strings 
+ 
+## 3. CSRF
+ CSRF is an attack in which a user clicks on a link which sends a request on the behalf of the user to a trsuted site. In this example, this is where a change request is made by the user.
+ 
+ ### Easy
+ After submitting the password change, a link is created: http://localhost/DVWA-master/vulnerabilities/csrf/?password_new=new_password&password_conf=new_password&Change=Change#. This can be sent to the user which could be embedded in a website such that the user's password is changed. 
+ 
+ ### Medium
+ In this case, the site now validates where the request is coming from. For example, after executing the above url, the following is displayed:
+ ![image](https://user-images.githubusercontent.com/39514108/146326082-8fb358aa-1005-40f2-903d-50122e0b88bb.png). After observing the requests, we can see that the referer is missing:
+  ![image](https://user-images.githubusercontent.com/39514108/146326273-8cfbbd02-d337-401d-baa7-fe270ec598c5.png) 
+ in comparison to ![image](https://user-images.githubusercontent.com/39514108/146326420-63f7d94e-0d00-4712-8e63-772d3e5252b3.png)
+After embedding a script and executing it like so: ![image](https://user-images.githubusercontent.com/39514108/146328932-569c99a4-5882-4745-b687-da9282c8fb07.png)
+ 
+, the password is not changed as the referrer is missing. So instead, reflective xss can be used. This is where the user can add in code in a function within the page to send requests (hence, the referrer will be the same). We can embed, the following in the stored xss page which will then change the password:
+ 
+![image](https://user-images.githubusercontent.com/39514108/146330227-00b5b314-16aa-4b32-b13c-293ca730e31c.png)
+ 
+ ![image](https://user-images.githubusercontent.com/39514108/146330296-a6ee5050-aadf-46e7-b1ca-5c79bf52ff8e.png)
+ 
+We can also construct a request in burp suite that includes the referrer. 
+ ![image](https://user-images.githubusercontent.com/39514108/146330940-ad126570-6773-45fb-ab2a-e14171451a40.png). After forwarding the request, the password is also changed.
+ 
+ ### High
+ After sending a request through to change the password we can see the following request being made, where an anti-CSRF token is added. 
+ 
+ However, after inspecting the page, we see a hidden token that is attached to the page, ![image](https://user-images.githubusercontent.com/39514108/146333155-6acea507-a33e-4cdd-88ed-522c7cd9ffd4.png). 
+ This means that we can create another request which incorporates the next value to send to the webpage. For example, by using the following link:
+ http://localhost/DVWA-master/vulnerabilities/csrf/?password_new=janel&password_conf=janel&Change=Change&user_token=6c3e10f0fc44c8249e70ce243b4c9e96 (which the user token is gained after refreshing the page), the password is changed.
+ 
+ ### Remarks
+ 
+ To prevent CSRF attacks, same-site cookies or asking for the current user's password can be used. 
+
+ 
+
+
