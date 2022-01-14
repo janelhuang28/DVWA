@@ -134,4 +134,39 @@ We can also construct a request in burp suite that includes the referrer.
  ## High
  
 In this example, the file name must be include.php or start with file://. Hence, the following can be used: file:///var/www/html/DVWA-master/hackable/flags/fi.php. 
+ 
+ ## Remarks 
+
+ Use least privilege to allow only the appropriate files.
+ 
+ # File Upload
+ 
+ This attack is where an attacker is able to upload a file and execute php on to it. 
+ 
+ ## Low
+ 
+ In a new file, the following line was entered into it. ![image](https://user-images.githubusercontent.com/39514108/149447253-1a14ab50-05e8-415b-9f35-8efbc9692833.png)
+After uploading the file and navigating to it and executing a command ``ls ``, we can see that commands can be executed:
+ ![image](https://user-images.githubusercontent.com/39514108/149447479-cf64b451-7561-4a12-a2da-909cee9aa972.png)
+ ![image](https://user-images.githubusercontent.com/39514108/149447508-aa139dba-2c52-4e53-8430-4f049d0f66fe.png)
+
+ ## Medium
+ 
+ Now the page only allows jpeg or png images. We can change the content type of the request to be image/jpeg to avoid this: ![image](https://user-images.githubusercontent.com/39514108/149448254-8494a3dd-04af-4d50-a3f9-2ce6c4d7addf.png)
+ We can see that after executing the file, the following can then be displayed: ![image](https://user-images.githubusercontent.com/39514108/149448221-b4400ac5-954c-4377-a4ab-cdf7162554c3.png)
+
+ ## High
+ 
+The page now requires that jpg or png are in the file using byte checks. Hence, the following command can be used to append a php command to a png image. 
+ ![image](https://user-images.githubusercontent.com/39514108/149449250-cf5476b9-81b7-4627-8d5a-f81c3281e89b.png)
+ 
+ Then using another vulnerability such as command injection: ``127.0.0.1|mv ../../hackable/uploads/dollar.png ../../hackable/uploads/dollar.php to rename the file, the following command can be executed: 
+ ![image](https://user-images.githubusercontent.com/39514108/149450399-691ed50c-0972-4781-a334-1fd2106fd524.png)
+
+## Remarks
+ 
+ Need to recreate image by strippping the metadata and re-encoding it.
+ 
+ 
+
 
