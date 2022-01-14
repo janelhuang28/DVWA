@@ -160,7 +160,7 @@ After uploading the file and navigating to it and executing a command ``ls ``, w
 The page now requires that jpg or png are in the file using byte checks. Hence, the following command can be used to append a php command to a png image. 
  ![image](https://user-images.githubusercontent.com/39514108/149449250-cf5476b9-81b7-4627-8d5a-f81c3281e89b.png)
  
- Then using another vulnerability such as command injection: ``127.0.0.1|mv ../../hackable/uploads/dollar.png ../../hackable/uploads/dollar.php to rename the file, the following command can be executed: 
+ Then using another vulnerability such as command injection: ``127.0.0.1|mv ../../hackable/uploads/dollar.png ../../hackable/uploads/dollar.php`` to rename the file, the following command can be executed: 
  ![image](https://user-images.githubusercontent.com/39514108/149450399-691ed50c-0972-4781-a334-1fd2106fd524.png)
 
 ## Remarks
