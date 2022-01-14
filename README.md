@@ -117,6 +117,21 @@ We can also construct a request in burp suite that includes the referrer.
  
  To prevent CSRF attacks, same-site cookies or asking for the current user's password can be used. 
 
+ # File Inclusion
  
-
+ This attack allows an attacker to view or execute files locally on a machine. Local File Inclusion (LFI) is where the files can are viewed or executed locally on the target machine whereas Remote File Inclusion (RFI) is where code hosted by another machine is executed on the local machine.
+ 
+ ## Low
+ 
+ To uncover the text, the directory of ../../hackable/flags/fi.php is tried. The levels of directory is obtained by trail and error.
+ ![image](https://user-images.githubusercontent.com/39514108/149444263-03827bfa-9e64-4f05-9763-30e8a088c9e6.png)
+ We can also see the password file by ../../../../../../etc/passwd.
+ 
+ ## Medium
+ 
+ In this example, the ../ are filtered. Hence, the following can be used to avoid the pattern match: ....//....//hackable/flags/fi.php. To access the password file, the following can be used: /etc/passwd
+ 
+ ## High
+ 
+In this example, the file name must be include.php or start with file://. Hence, the following can be used: file:///var/www/html/DVWA-master/hackable/flags/fi.php. 
 
