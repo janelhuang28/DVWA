@@ -167,6 +167,13 @@ The page now requires that jpg or png are in the file using byte checks. Hence, 
  
  Need to recreate image by strippping the metadata and re-encoding it.
  
+ # Insecure Captcha
  
+ Captcha is a program that is used to check if the user is a legitimate user or a bot. 
 
+ ## Low 
+ 
+ In this example, the developer requests for a password change, but htere is a hidden form where step=2 to verify that the password has been changed. By sending the request for the password changed through burpsuite, this changes the password. 
+ ![image](https://user-images.githubusercontent.com/39514108/149611688-3646cd5d-783f-4ceb-b9e0-234e620a1aa7.png)
 
+ ## Medium
