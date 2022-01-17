@@ -221,11 +221,11 @@ Now the developer uses a defulat option list to the request through. However, th
 
  This attack is similar to normal SQL Injection attacks but the attack uses a timer to determine whether the query was successful. If the query was unsuccessful, it is able to use the timing to determine what action to take next. This requires that the developer is specifying a generic error page when an unsuccessful SQL query is entered.
  
- # Low
+ ## Low
  
 We can use the response to determine whether the version number is correct. For example, using the following command `` 1' and substring(version(),1,1) = 2-- -``. This helps to check for the version number of the database, if it is correct, a success message appears. We can try this for the remaining characters. 
  
- # Medium and High
+ ## Medium and High
  
  Similar to SQL Injection
  
