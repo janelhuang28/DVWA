@@ -177,3 +177,20 @@ The page now requires that jpg or png are in the file using byte checks. Hence, 
  ![image](https://user-images.githubusercontent.com/39514108/149611688-3646cd5d-783f-4ceb-b9e0-234e620a1aa7.png)
 
  ## Medium
+
+ Medium level is similiar to the low level, but instead an extra parameter of ``passed_captcha`` is added. This parameter can be manipulated and exploited by an attacker as shown below.
+ ![image](https://user-images.githubusercontent.com/39514108/149684447-141c9f5b-b994-4316-9cb9-74d01fef7542.png)
+
+ ## High
+ 
+ The dev note as indicated noted that the request required parameters such as the captcha response and the user-agent. By changing the values in the corresponding header, we can see the password changed.
+ 
+ ![image](https://user-images.githubusercontent.com/39514108/149684822-d260d071-ae5f-4408-b391-cdfe6a66b0e0.png)
+ 
+ ## Remarks
+ 
+ By requiring the user to enter their current password, this prevents the ability of the attacker to change the password.
+ 
+ # SQL Injection
+ 
+ 
