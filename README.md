@@ -215,6 +215,22 @@ Now the developer uses a defulat option list to the request through. However, th
  
  To prevent against SQL injection attacks, one must ensure that the data is sanitized and checked for the right format (e.g. if it is a number, etc.)
  
+ ![image](https://user-images.githubusercontent.com/39514108/149686121-fec9215b-8970-4ce0-bbcc-8bc795b950b2.png) 
+ 
  # SQL Injection (Blind)
- ![image](https://user-images.githubusercontent.com/39514108/149686121-fec9215b-8970-4ce0-bbcc-8bc795b950b2.png)
+
+ This attack is similar to normal SQL Injection attacks but the attack uses a timer to determine whether the query was successful. If the query was unsuccessful, it is able to use the timing to determine what action to take next. This requires that the developer is specifying a generic error page when an unsuccessful SQL query is entered.
+ 
+ # Low
+ 
+We can use the response to determine whether the version number is correct. For example, using the following command `` 1' and substring(version(),1,1) = 2-- -``. This helps to check for the version number of the database, if it is correct, a success message appears. We can try this for the remaining characters. 
+ 
+ # Medium and High
+ 
+ Similar to SQL Injection
+ 
+ # Weak Session IDs
+ 
+ 
+ 
 
