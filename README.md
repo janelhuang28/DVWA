@@ -193,4 +193,28 @@ The page now requires that jpg or png are in the file using byte checks. Hence, 
  
  # SQL Injection
  
+ SQL injection is an attack that uses SQL rules to exploit the vulnerbility of a developer not sanitising the user's input.
  
+ ## Low 
+ 
+ By using the comment symbol, this ignores any arguments that are present in the SQL request. We can see in the following command ``1' OR 1=1 UNION SELECT user, password FROM users;#``, the five users and their corresponding passwords can be found. Note that the columns are normally named columns for usernames and passwords. The users database is found in the source code.
+ 
+ ![image](https://user-images.githubusercontent.com/39514108/149685551-05ae3d2d-ed62-4dd6-b680-b8374b12ba73.png)
+
+ ## Medium
+ 
+Now the developer uses a defulat option list to the request through. However, the parameters are stil sent in the request which can then be altered. The developer also uses real_escape_strings. This can be circumvented by not using quotations. The following snippet shows successful passwords and usernames that are found.
+ 
+ ![image](https://user-images.githubusercontent.com/39514108/149686009-7bc3b47c-413e-4118-b0e0-8456bc75283b.png)
+ 
+ ## High
+ 
+ The high level is similar to the low level injection where the same command used in the low level can be used to exploit the vulnerability.
+ 
+ ## Remarks 
+ 
+ To prevent against SQL injection attacks, one must ensure that the data is sanitized and checked for the right format (e.g. if it is a number, etc.)
+ 
+ # SQL Injection (Blind)
+ ![image](https://user-images.githubusercontent.com/39514108/149686121-fec9215b-8970-4ce0-bbcc-8bc795b950b2.png)
+
