@@ -231,6 +231,62 @@ We can use the response to determine whether the version number is correct. For 
  
  # Weak Session IDs
  
+ Session IDs are used to indicate that a particular user has logged into a website. Hence, session IDs must not be easily guessed by attackers.
+ 
+ ## Low 
+ 
+ After investigating the storage tab which contains the cookies, we can see that everytime the generate button is clicked, the cookie value is increased by 1. Hence, the sequence is increasing by 1. 
+ 
+ ![image](https://user-images.githubusercontent.com/39514108/149856681-6d5d8ecb-cfe1-4fd4-a446-b7ccf77cccae.png)
+
+ 
+ ## Medium
+ 
+ After investigating the cookies, it seems like a unix timestamp. BY validating this we can see that the value of the cookie corresponded to a timestamp.
+ 
+ ![image](https://user-images.githubusercontent.com/39514108/149857178-f83cd984-e96b-4c10-80b6-b01ccddc2431.png)
+ 
+ ![image](https://user-images.githubusercontent.com/39514108/149857153-37f7dc85-8bcc-4df7-aa60-1bd68beba780.png)
+
+ ## High
+ 
+ By viewing the hash we can see that it is a short hash. Unlike base64, it does not have ``==`` signs with it, hence it is most likely to be a md5 hash. We can decode the hashes which result in a incremental increase. Therefore, the algorithm is where the number is incremented and hased with md5. 
+ 
+ ![image](https://user-images.githubusercontent.com/39514108/149857709-99dbffe7-a913-47b1-9b96-19de3f54757e.png)
+
+ ## Remarks
+
+ This uses a random number with the current time to set the value.
+ 
+ # XSS (DOM)
+ 
+ This attack is where the Javascript is hidden within in the URL and the script is executed when the page is rendered.
+ 
+ ## Low
+ 
+ In this level, the javascript is not sanitised. Hence, we can add in the the following into the URL ``http://127.0.0.1/DVWA-master/vulnerabilities/xss_d/?default=<script>alert("hi")</script>``
+ 
+ ![image](https://user-images.githubusercontent.com/39514108/149858355-e90a6cb0-d432-4241-b96d-ec2390a69a9a.png)
+
+ ## Medium
+ 
+Now the page rejects any ``<script`` patterns. We can circumvent this by adding an image tag with the action to alert the message. For example, using the following URL we can achieve the goal of displaying the message: http://127.0.0.1/DVWA-master/vulnerabilities/xss_d/?default=1</select><img src=image.png onerror=alert(1)/>
+ Note that the select tag is used as after exmaining the source code, the select tag needs to be closed on the option list.
+ 
+ ![image](https://user-images.githubusercontent.com/39514108/149859581-c42167a2-7f42-4741-ade8-b35735581303.png)
+
+ ## High
+ 
+ Now the site only accepts the language names that listed. Therefore, in order to pass this level, the ``#`` can be added in the URL to execute the script. This sign avoids sending the remaining of the URL to the server. Hence the following URL is used: This results in the following page:http://127.0.0.1/DVWA-master/vulnerabilities/xss_d/?#default=<script>alert("hi")</script>
+
+ ![image](https://user-images.githubusercontent.com/39514108/149860599-7c2fa66f-4dcd-4389-87ff-e736c678861f.png)
+
+ ## Remarks
+ 
+ The input is encoded to prevent it from being executed.
+ 
+ # XSS (Reflected)
+ 
  
  
 
