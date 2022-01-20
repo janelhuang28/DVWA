@@ -299,7 +299,7 @@ We can use the following script to execute it: `` <script>window.location='http:
  
  Now the page checks for the <script> tag. This can be avoided in several ways:
  
- * <img src=image.png onerror=alert(document.cookie)>
+ * ``<img src=image.png onerror=alert(document.cookie)>``
  * <scr<script>ipt>alert(document.cookie)</script>
  * <SCRIPT>alert(document.cookie)</SCRIPT>
  
@@ -317,6 +317,109 @@ We can use the following script to execute it: `` <script>window.location='http:
  
  # XSS (Stored)
  
+ This is persistent attack where the javascript is stored permanently on the page. 
+ 
+ ## Low
+ 
+ To allow the page to redirect, the following code is needed ``<script>window.location="http://stackoverflow.com"
+</script>``. In the low-level, there are no checks. Hence, everytime the page is visited a redirection is made. Note that as the fields have a limit on the size, the length can be changed directly using the field's element (inspect tab).
+ 
+![image](https://user-images.githubusercontent.com/39514108/150245642-764ad606-1cda-4b44-9c75-c333339c2dfe.png)
+
+ 
+ ## Medium
+
+ Now the developer has chosed to sanitise some inputs. As the name field is not sanitised (only with the condition of replacing <script> tags), we can use the following code to redirect a page: ``<SCRIPT>window.location="http://stackoverflow.com" </SCRIPT>``
+ 
+ ![image](https://user-images.githubusercontent.com/39514108/150246211-568753fa-e066-41e8-85d9-1549bea00cbb.png)
+
+ ## High
+
+ Now the developer sanitised any script tags, we can use the XSS (reflected to solve the level). Using the following command: `` <img src=image.png onerror=window.location="http://google.com"> `` this can redirect the user to a page. 
+ ![image](https://user-images.githubusercontent.com/39514108/150247329-b869494e-2684-4357-b2c6-82297bf6b61c.png)
+
+ ## Remarks
+ Sanitise user inputs by using PHP function such as htmlspecialchars()
+ 
+ # CSP Bypass
+ 
+ Content Security Policies (CSP) are policies that define where resources and scripts can be loaded from. 
+ 
+ ## Low 
+ 
+ To create a custom script, we first need to create a http server that hosts the script. A http server is created with the following command `` python3 -m http.server 1337
+``. 
+ 
+ Then a custom script is created with the following contents `` alert('hi')``. This file is copied into DVWA-Master via the command ``sudo cp new.js /var/www/html/DVWA-master``
+ 
+ After pasting the site: ``http://127.0.0.1/DVWA-master/new.js`` into the include script, the script is executed.
+
+ ![image](https://user-images.githubusercontent.com/39514108/150251187-17756158-a6bb-4355-b69a-bcd0e9967569.png)
+ 
+ ## Medium
+ 
+ Now the page includes a nonce, we can directly include this in the include box. With the following command the alert can be displayed: ``<script nonce="TmV2ZXIgZ29pbmcgdG8gZ2l2ZSB5b3UgdXA=" src="/DVWA-master/new.js"></script>``
+ 
+ ![image](https://user-images.githubusercontent.com/39514108/150260583-50251c3c-a672-47e3-b002-a1f4aa0f529b.png)
+
+## High
+ 
+ On clicking the solve the sum button, the request includes a callback function. We can change this in burpsuite to ``alert(1)`` as shown below ot display the alert.
+ 
+ ![image](https://user-images.githubusercontent.com/39514108/150261602-65e68428-0049-4b2b-900b-d5379e246f28.png)
+ 
+ ![image](https://user-images.githubusercontent.com/39514108/150261617-6048a6a7-7e5f-4d7f-8c3a-457445eb7a55.png)
+ 
+ ## Remarks
+
+ Callbacks should not be used, the CSP settings are set to only allow extneral JSs on the local server. This uses the following policy: ``Content-Security-Policy: script-src 'self';``
+ 
+ #Javascript
+ 
+ This helps to understand javascript attacks and how those can be bypassed.
+ 
+ ## Low
+ 
+ In inspecting the code, we can see that a hidden element, token, is included. Tehn after observing the source code we find that the token is a rot13 then md5 hash. 
+ 
+  
+ ![image](https://user-images.githubusercontent.com/39514108/150262808-d2596740-b9e7-4af5-81aa-2af15ce9c016.png)
+
+ Hence, after passing the success phrase into https://gchq.github.io/CyberChef/#recipe=ROT13(true,true,false,13)MD5()&input=c3VjY2Vzcw, the following page is displayed.
+
+ ![image](https://user-images.githubusercontent.com/39514108/150262936-8967cb48-f35e-4740-a07f-f1673f23c28e.png)
+
+ 
+ ## Medium
+ 
+ After examining the code, the phrase is reversed whilst adding the XX in the front and back. Hence, using the following code: ``Token: XXsseccusXX Phrase: success``, the level is passed
+ 
+ ![image](https://user-images.githubusercontent.com/39514108/150263534-bd5110ce-97b5-46a4-9a3e-e853c068511a.png)
+
+## High
+ 
+ After analysing the code, it could be obfuscated. Hence a javascript deobfuscation tool: https://lelinhtinh.github.io/de4js/ is used. When decoded it produces the following: 
+ 
+ ![image](https://user-images.githubusercontent.com/39514108/150264814-e01f10aa-efcf-4bfe-a5b1-fd4dac32fe98.png)
+
+Description of functions: 
+ The do_something function reverses the string. Hence after reversing success, the following is generated: ``sseccus``. The token part_2 then generates the token with XX concatenated at the front: XXsseccus and hashes with SHA256. Token_part_3 takes the hash and adds 'ZZ'. This produces the following token: ec7ef8687050b6fe803867ea696734c67b541dfafb286a0b1239f42ac5b0aa84
+
+ Save the results in result.js and run the HTTP server (python3 -m http.server 1335)
+ 
+ Now we need to replace the high.js with the deobfuscated file. We can so this thorugh Burp->Proxy->Options->Match and Replace: ![image](https://user-images.githubusercontent.com/39514108/150271573-7ee8148e-32db-4df1-a15a-58f7423cc0a1.png)
+
+ We can set breakpoints in the Debugger of Firefox: 
+
+ ![image](https://user-images.githubusercontent.com/39514108/150271678-c684e154-bf68-471f-baeb-23e7a39a47cf.png)
+
+ Steps:
+ 1. In Firefox console set the following: document.getElementById("phrase").value = "success"
+ 2. Step over until the hidden value is set to 7f1bfaaf829f785ba5801d5bf68c1ecaf95ce04545462c8b8f311dfc9014068a, then click submit.
+ 
+  ![image](https://user-images.githubusercontent.com/39514108/150271488-1760b999-17e8-417e-b4a8-5641e1cd4c33.png)
+
+
  
  
 
